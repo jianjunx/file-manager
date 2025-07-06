@@ -4,6 +4,9 @@
 
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
+import * as $api_auth_login from "./routes/api/auth/login.ts";
+import * as $api_auth_logout from "./routes/api/auth/logout.ts";
+import * as $api_auth_status from "./routes/api/auth/status.ts";
 import * as $api_files_copy from "./routes/api/files/copy.ts";
 import * as $api_files_create_dir from "./routes/api/files/create-dir.ts";
 import * as $api_files_delete from "./routes/api/files/delete.ts";
@@ -15,6 +18,7 @@ import * as $api_files_upload from "./routes/api/files/upload.ts";
 import * as $api_joke from "./routes/api/joke.ts";
 import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $index from "./routes/index.tsx";
+import * as $AuthWrapper from "./islands/AuthWrapper.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $FileManager from "./islands/FileManager.tsx";
 import type { Manifest } from "$fresh/server.ts";
@@ -23,6 +27,9 @@ const manifest = {
   routes: {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
+    "./routes/api/auth/login.ts": $api_auth_login,
+    "./routes/api/auth/logout.ts": $api_auth_logout,
+    "./routes/api/auth/status.ts": $api_auth_status,
     "./routes/api/files/copy.ts": $api_files_copy,
     "./routes/api/files/create-dir.ts": $api_files_create_dir,
     "./routes/api/files/delete.ts": $api_files_delete,
@@ -36,6 +43,7 @@ const manifest = {
     "./routes/index.tsx": $index,
   },
   islands: {
+    "./islands/AuthWrapper.tsx": $AuthWrapper,
     "./islands/Counter.tsx": $Counter,
     "./islands/FileManager.tsx": $FileManager,
   },

@@ -2,9 +2,10 @@ import { Handlers } from "$fresh/server.ts";
 import { join, normalize } from "https://deno.land/std@0.224.0/path/mod.ts";
 import { ensureDir } from "https://deno.land/std@0.224.0/fs/ensure_dir.ts";
 import { getFullPath } from "../../../config.ts";
+import { requireAuth } from "../../../auth.ts";
 
 export const handler: Handlers = {
-  async POST(req) {
+  POST: requireAuth(async (req) => {
     const formData = await req.formData();
     const targetPath = formData.get("path") as string || "/";
     
@@ -59,5 +60,5 @@ export const handler: Handlers = {
         headers: { "Content-Type": "application/json" },
       });
     }
-  },
+  }),
 }; 

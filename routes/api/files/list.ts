@@ -1,9 +1,10 @@
 import { Handlers } from "$fresh/server.ts";
 import { join, normalize } from "https://deno.land/std@0.224.0/path/mod.ts";
 import { getFullPath } from "../../../config.ts";
+import { requireAuth } from "../../../auth.ts";
 
 export const handler: Handlers = {
-  async GET(req) {
+  GET: requireAuth(async (req) => {
     const url = new URL(req.url);
     const path = url.searchParams.get("path") || "/";
     
@@ -51,5 +52,5 @@ export const handler: Handlers = {
         headers: { "Content-Type": "application/json" },
       });
     }
-  },
+  }),
 }; 

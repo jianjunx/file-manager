@@ -15,6 +15,7 @@
 - 🔍 面包屑导航
 - 📱 响应式设计
 - 🌙 支持暗色模式
+- 🔐 用户身份验证（可选）
 - 🐳 Docker 部署支持
 
 ## 环境要求
@@ -48,7 +49,28 @@ deno task start
 
 可选的环境变量：
 - `PORT`: 应用运行端口（默认为8000）
+- `AUTH_USERNAME`: 身份验证用户名（设置后启用身份验证）
+- `AUTH_PASSWORD`: 身份验证密码（设置后启用身份验证）
+- `SESSION_SECRET`: Session密钥（可选，未设置时自动生成）
 - `FILE_MANAGER_ROOT`: 文件管理器的根目录路径（Docker部署时默认为/data，本地开发时默认为./data）
+
+### 身份验证
+
+文件管理器支持可选的用户身份验证功能：
+
+- **启用身份验证**: 设置 `AUTH_USERNAME` 和 `AUTH_PASSWORD` 环境变量
+- **禁用身份验证**: 不设置 `AUTH_USERNAME` 和 `AUTH_PASSWORD`，任何人都可以访问
+- **Session管理**: 登录后使用cookie存储session，默认有效期7天
+
+示例配置：
+```bash
+# 启用身份验证
+export AUTH_USERNAME=admin
+export AUTH_PASSWORD=your_secure_password
+
+# 可选：自定义session密钥
+export SESSION_SECRET=your_random_secret_key
+```
 
 ## Docker 部署
 
@@ -102,8 +124,23 @@ docker run -d \
 Docker 部署时可以使用以下环境变量：
 
 - `PORT`: 应用端口（默认 8000）
+- `AUTH_USERNAME`: 身份验证用户名（可选）
+- `AUTH_PASSWORD`: 身份验证密码（可选）
+- `SESSION_SECRET`: Session密钥（可选）
 
 容器会自动使用 `/data` 目录作为文件管理器的根目录，你只需要将宿主机目录映射到 `/data` 即可。
+
+#### 启用身份验证的Docker命令示例
+
+```bash
+docker run -d \
+  --name file-manager \
+  -p 8000:8000 \
+  -e AUTH_USERNAME=admin \
+  -e AUTH_PASSWORD=your_secure_password \
+  -v /path/to/your/files:/data \
+  file-manager
+```
 
 ## 使用说明
 
@@ -115,10 +152,12 @@ Docker 部署时可以使用以下环境变量：
 
 ## 安全特性
 
-- 路径遍历攻击防护
-- 文件访问权限控制
-- 安全的文件上传处理
-- 用户输入验证
+- 🔐 可选的用户身份验证
+- 🛡️ 路径遍历攻击防护
+- 🔒 文件访问权限控制
+- 📋 安全的文件上传处理
+- ✅ 用户输入验证
+- 🍪 安全的Session管理
 
 ## 技术栈
 

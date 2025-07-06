@@ -15,7 +15,11 @@ interface FileEntry {
   path: string;
 }
 
-export default function FileManager() {
+interface FileManagerProps {
+  onLogout?: () => void;
+}
+
+export default function FileManager({ onLogout }: FileManagerProps) {
   const [currentPath, setCurrentPath] = useState("/");
   const [files, setFiles] = useState<FileEntry[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<Set<string>>(new Set());
@@ -255,6 +259,15 @@ export default function FileManager() {
                       <span class="sm:hidden">删除 ({selectedFiles.size})</span>
                     </button>
                   </>
+                )}
+                {onLogout && (
+                  <button
+                    onClick={onLogout}
+                    class="px-3 py-2 text-sm sm:px-4 sm:text-base bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+                  >
+                    <span class="hidden sm:inline">登出</span>
+                    <span class="sm:hidden">退出</span>
+                  </button>
                 )}
               </div>
             </div>

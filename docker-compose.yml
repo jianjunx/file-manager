@@ -12,6 +12,11 @@ services:
       # - /path/to/your/files:/data
     environment:
       - PORT=8000
+      # 身份验证配置 - 如果设置了用户名和密码，则启用身份验证
+      - AUTH_USERNAME=admin
+      - AUTH_PASSWORD=your_secure_password
+      # 可选：Session密钥
+      # - SESSION_SECRET=your_random_secret_key
     restart: unless-stopped
     container_name: file-manager
     

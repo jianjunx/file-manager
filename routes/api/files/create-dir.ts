@@ -1,9 +1,10 @@
 import { Handlers } from "$fresh/server.ts";
 import { join, normalize } from "https://deno.land/std@0.224.0/path/mod.ts";
 import { getFullPath } from "../../../config.ts";
+import { requireAuth } from "../../../auth.ts";
 
 export const handler: Handlers = {
-  async POST(req) {
+  POST: requireAuth(async (req) => {
     const { path, name } = await req.json();
     
     // 安全检查
@@ -31,5 +32,5 @@ export const handler: Handlers = {
         headers: { "Content-Type": "application/json" },
       });
     }
-  },
+  }),
 }; 
