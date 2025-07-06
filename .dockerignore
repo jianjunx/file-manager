@@ -1,0 +1,49 @@
+# Node modules
+node_modules/
+
+# Deno cache
+.deno/
+
+# Environment files
+.env
+.env.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+README.md
+docs/
+
+# Test files
+test/
+tests/
+*.test.ts
+*.test.js
+
+# Build artifacts
+dist/
+build/
+
+# Data directory (if exists locally)
+data/
+
+# Log files
+*.log
+logs/
+
+# Docker files (不需要复制到镜像中)
+Dockerfile
+docker-compose.yml
+.dockerignore 
