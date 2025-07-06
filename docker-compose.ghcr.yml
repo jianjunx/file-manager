@@ -3,8 +3,7 @@ version: '3.8'
 services:
   file-manager:
     # 使用GitHub Container Registry的预构建镜像
-    # 请将 'your-username' 替换为您的GitHub用户名
-    image: ghcr.io/your-username/file-manager:latest
+    image: ghcr.io/jianjunx/file-manager:latest
     ports:
       - "8000:8000"
     volumes:

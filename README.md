@@ -80,14 +80,14 @@ export SESSION_SECRET=your_random_secret_key
 
 ```bash
 # 拉取最新镜像
-docker pull ghcr.io/your-username/file-manager:latest
+docker pull ghcr.io/jianjunx/file-manager:latest
 
 # 运行容器
 docker run -d \
   --name file-manager \
   -p 8000:8000 \
   -v /path/to/your/files:/data \
-  ghcr.io/your-username/file-manager:latest
+  ghcr.io/jianjunx/file-manager:latest
 
 # 启用身份验证
 docker run -d \
@@ -96,7 +96,7 @@ docker run -d \
   -e AUTH_USERNAME=admin \
   -e AUTH_PASSWORD=your_secure_password \
   -v /path/to/your/files:/data \
-  ghcr.io/your-username/file-manager:latest
+  ghcr.io/jianjunx/file-manager:latest
 ```
 
 ### 快速开始
@@ -122,8 +122,7 @@ docker run -d \
 # 1. 创建数据目录
 mkdir -p ./data
 
-# 2. 修改docker-compose.ghcr.yml中的GitHub用户名
-# 将 'your-username' 替换为实际的GitHub用户名
+# 2. 配置已更新为使用 jianjunx/file-manager 镜像
 
 # 3. 启动服务
 docker-compose -f docker-compose.ghcr.yml up -d
@@ -183,7 +182,7 @@ docker run -d \
   -e AUTH_USERNAME=admin \
   -e AUTH_PASSWORD=your_secure_password \
   -v /path/to/your/files:/data \
-  file-manager
+  ghcr.io/jianjunx/file-manager:latest
 ```
 
 ## 使用说明
