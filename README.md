@@ -74,6 +74,31 @@ export SESSION_SECRET=your_random_secret_key
 
 ## Docker 部署
 
+### 使用预构建镜像（推荐）
+
+项目已配置GitHub Actions自动构建多平台镜像，支持amd64和arm64架构：
+
+```bash
+# 拉取最新镜像
+docker pull ghcr.io/your-username/file-manager:latest
+
+# 运行容器
+docker run -d \
+  --name file-manager \
+  -p 8000:8000 \
+  -v /path/to/your/files:/data \
+  ghcr.io/your-username/file-manager:latest
+
+# 启用身份验证
+docker run -d \
+  --name file-manager \
+  -p 8000:8000 \
+  -e AUTH_USERNAME=admin \
+  -e AUTH_PASSWORD=your_secure_password \
+  -v /path/to/your/files:/data \
+  ghcr.io/your-username/file-manager:latest
+```
+
 ### 快速开始
 
 使用提供的示例脚本快速启动：
@@ -87,23 +112,42 @@ export SESSION_SECRET=your_random_secret_key
 
 ### 使用 Docker Compose（推荐）
 
-1. 创建数据目录
+项目提供两个Docker Compose配置文件：
+
+#### 方案一：使用预构建镜像（推荐）
+
+使用`docker-compose.ghcr.yml`从GitHub Container Registry拉取预构建镜像：
+
 ```bash
+# 1. 创建数据目录
 mkdir -p ./data
+
+# 2. 修改docker-compose.ghcr.yml中的GitHub用户名
+# 将 'your-username' 替换为实际的GitHub用户名
+
+# 3. 启动服务
+docker-compose -f docker-compose.ghcr.yml up -d
 ```
 
-2. 修改 `docker-compose.yml` 中的卷映射
-```yaml
-volumes:
-  - /path/to/your/files:/data  # 将 /path/to/your/files 替换为你的文件目录
-```
+#### 方案二：本地构建
 
-3. 启动服务
+使用`docker-compose.yml`本地构建镜像：
+
 ```bash
+# 1. 创建数据目录
+mkdir -p ./data
+
+# 2. 修改 docker-compose.yml 中的卷映射（可选）
+# volumes:
+#   - /path/to/your/files:/data
+
+# 3. 启动服务
 docker-compose up -d
 ```
 
-### 使用 Docker 命令
+### 本地构建
+
+如果您需要自行构建镜像：
 
 1. 构建镜像
 ```bash
@@ -166,20 +210,40 @@ docker run -d \
 - [Tailwind CSS](https://tailwindcss.com/) - 实用程序优先的 CSS 框架
 - [Preact](https://preactjs.com/) - 轻量级的 React 替代品
 
+## CI/CD
+
+项目配置了GitHub Actions自动化流水线：
+
+- ✅ 自动构建多平台Docker镜像（amd64, arm64）
+- 📦 自动推送到GitHub Container Registry
+- 🏷️ 自动标签管理（latest, version tags）
+- 🔒 安全的构建流程和签名验证
+
+每次推送到main分支或创建新的版本标签时，都会自动触发构建流程。
+
 ## 开发
 
 ### 项目结构
 
 ```
+├── .github/                # GitHub配置
+│   └── workflows/          # GitHub Actions工作流
+│       └── docker-build.yml # 多平台Docker镜像构建
 ├── components/              # 可重用组件
 │   ├── Breadcrumb.tsx      # 面包屑导航
 │   ├── ContextMenu.tsx     # 右键菜单
 │   ├── DirectorySelector.tsx # 目录选择器
 │   ├── FileList.tsx        # 文件列表
+│   ├── LoginForm.tsx       # 登录表单
 │   └── UploadModal.tsx     # 上传对话框
 ├── islands/                # 交互组件
+│   ├── AuthWrapper.tsx     # 身份验证包装器
 │   └── FileManager.tsx     # 文件管理器主组件
 ├── routes/                 # 路由和API
+│   ├── api/auth/           # 身份验证API
+│   │   ├── login.ts        # 用户登录
+│   │   ├── logout.ts       # 用户登出
+│   │   └── status.ts       # 认证状态
 │   ├── api/files/          # 文件管理API
 │   │   ├── copy.ts         # 复制文件
 │   │   ├── create-dir.ts   # 创建目录
@@ -191,10 +255,12 @@ docker run -d \
 │   │   └── upload.ts       # 上传文件
 │   └── index.tsx           # 主页面
 ├── static/                 # 静态资源
+├── auth.ts                 # 身份验证工具
 ├── config.ts               # 配置文件
 ├── main.ts                 # 应用入口
 ├── Dockerfile              # Docker配置
-├── docker-compose.yml      # Docker Compose配置
+├── docker-compose.yml      # Docker Compose配置（本地构建）
+├── docker-compose.ghcr.yml # Docker Compose配置（预构建镜像）
 ├── run-example.sh          # 示例启动脚本
 ├── test-deployment.sh      # 部署测试脚本
 ├── env.example             # 环境变量示例

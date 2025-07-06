@@ -2,8 +2,9 @@ version: '3.8'
 
 services:
   file-manager:
-    # 本地构建镜像
-    build: .
+    # 使用GitHub Container Registry的预构建镜像
+    # 请将 'your-username' 替换为您的GitHub用户名
+    image: ghcr.io/your-username/file-manager:latest
     ports:
       - "8000:8000"
     volumes:
@@ -19,7 +20,7 @@ services:
       # 可选：Session密钥
       # - SESSION_SECRET=your_random_secret_key
     restart: unless-stopped
-    container_name: file-manager-local
+    container_name: file-manager-ghcr
     
   # 可选：如果需要反向代理
   # nginx:
