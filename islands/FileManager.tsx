@@ -161,6 +161,39 @@ export default function FileManager({ onLogout }: FileManagerProps) {
     }
   };
 
+  // 添加批量下载功能
+  const handleBatchDownload = async (filePaths: string[]) => {
+    try {
+      // 过滤出文件（排除目录）
+      const fileEntries = files.filter(f => filePaths.includes(f.path) && f.isFile);
+      
+      if (fileEntries.length === 0) {
+        alert("请选择要下载的文件");
+        return;
+      }
+
+      if (fileEntries.length === 1) {
+        // 单文件直接下载
+        handleDownload(fileEntries[0]);
+      } else {
+        // 多文件逐个下载
+        const confirmed = confirm(`确定要下载 ${fileEntries.length} 个文件吗？文件将逐个下载。`);
+        if (!confirmed) return;
+
+        for (const file of fileEntries) {
+          // 添加延迟避免浏览器下载限制
+          await new Promise(resolve => setTimeout(resolve, 500));
+          handleDownload(file);
+        }
+      }
+      
+      // 下载完成后清空选择
+      setSelectedFiles(new Set());
+    } catch (err) {
+      alert(`下载失败: ${err instanceof Error ? err.message : String(err)}`);
+    }
+  };
+
   const handleRename = async (file: FileEntry) => {
     const newName = prompt("输入新名称:", file.name);
     if (!newName || newName === file.name) return;
@@ -237,6 +270,13 @@ export default function FileManager({ onLogout }: FileManagerProps) {
                 </button>
                 {selectedFiles.size > 0 && (
                   <>
+                    <button
+                      onClick={() => handleBatchDownload(selectedFilesArray)}
+                      class="px-3 py-2 text-sm sm:px-4 sm:text-base bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+                    >
+                      <span class="hidden sm:inline">下载选中</span>
+                      <span class="sm:hidden">下载</span>
+                    </button>
                     <button
                       onClick={() => handleMove(selectedFilesArray)}
                       class="px-3 py-2 text-sm sm:px-4 sm:text-base bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
