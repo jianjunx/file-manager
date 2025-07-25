@@ -5,6 +5,7 @@ import UploadModal from "../components/UploadModal.tsx";
 import Breadcrumb from "../components/Breadcrumb.tsx";
 import ContextMenu from "../components/ContextMenu.tsx";
 import DirectorySelector from "../components/DirectorySelector.tsx";
+import VideoPlayer from "../components/VideoPlayer.tsx";
 
 interface FileEntry {
   name: string;
@@ -37,6 +38,8 @@ export default function FileManager({ onLogout }: FileManagerProps) {
     y: number;
     file: FileEntry | null;
   } | null>(null);
+  const [showVideoPlayer, setShowVideoPlayer] = useState(false);
+  const [currentVideoUrl, setCurrentVideoUrl] = useState("");
 
   useEffect(() => {
     if (IS_BROWSER) {
@@ -67,6 +70,11 @@ export default function FileManager({ onLogout }: FileManagerProps) {
     if (file.isDirectory) {
       setCurrentPath(file.path);
       setSelectedFiles(new Set());
+    } else if (file.isFile && file.name.toLowerCase().endsWith('.mp4')) {
+      // 处理视频文件点击，打开视频播放器
+      const videoUrl = `/api/files/stream?path=${encodeURIComponent(file.path)}`;
+      setCurrentVideoUrl(videoUrl);
+      setShowVideoPlayer(true);
     }
   };
 
@@ -400,6 +408,17 @@ export default function FileManager({ onLogout }: FileManagerProps) {
               handleCopy([contextMenu.file.path]);
             }
             setContextMenu(null);
+          }}
+        />
+      )}
+
+      {/* 视频播放器 */}
+      {showVideoPlayer && (
+        <VideoPlayer
+          videoUrl={currentVideoUrl}
+          onClose={() => {
+            setShowVideoPlayer(false);
+            setCurrentVideoUrl("");
           }}
         />
       )}

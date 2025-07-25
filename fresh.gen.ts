@@ -14,6 +14,7 @@ import * as $api_files_download from "./routes/api/files/download.ts";
 import * as $api_files_list from "./routes/api/files/list.ts";
 import * as $api_files_move from "./routes/api/files/move.ts";
 import * as $api_files_rename from "./routes/api/files/rename.ts";
+import * as $api_files_stream from "./routes/api/files/stream.ts";
 import * as $api_files_upload from "./routes/api/files/upload.ts";
 import * as $api_joke from "./routes/api/joke.ts";
 import * as $greet_name_ from "./routes/greet/[name].tsx";
@@ -37,6 +38,7 @@ const manifest = {
     "./routes/api/files/list.ts": $api_files_list,
     "./routes/api/files/move.ts": $api_files_move,
     "./routes/api/files/rename.ts": $api_files_rename,
+    "./routes/api/files/stream.ts": $api_files_stream,
     "./routes/api/files/upload.ts": $api_files_upload,
     "./routes/api/joke.ts": $api_joke,
     "./routes/greet/[name].tsx": $greet_name_,
